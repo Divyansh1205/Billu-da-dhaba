@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Restaurant POS System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+</head>
+<body>
+    <!-- Login/Signup Page -->
+    <div class="container-fluid py-3" id="loginPage">
+        <div class="login-container">
+            <div class="login-header">
+                <img src="images/Billu-Da-Dhaba.jpg.jpg" alt="Billu Da Dhaba Logo" class="login-logo">
+                <h2>Billu Da Dhaba</h2>
+                <p class="text-muted">All-in-One Restaurant Management System</p>
+            </div>
+            
+            <div class="login-tabs">
+                <button class="login-tab active" id="loginTab">Login</button>
+                <button class="login-tab" id="signupTab">Sign Up</button>
+            </div>
+            
+            <div class="login-form active" id="loginForm">
+                <form id="loginFormElement">
+                    <div class="mb-3">
+                        <label for="loginUsername" class="form-label" style="font-size: 0.95rem;">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" id="loginUsername" placeholder="Enter username" required style="font-size: 0.95rem;">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="loginPassword" class="form-label" style="font-size: 0.95rem;">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" id="loginPassword" placeholder="Enter password" required style="font-size: 0.95rem;">
+                        </div>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="rememberMe" style="transform: scale(1.1);">
+                        <label class="form-check-label" for="rememberMe" style="font-size: 0.9rem;">Remember me</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-2" style="font-size: 0.95rem;">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </button>
+                </form>
+            </div>
+            
+            <div class="login-form" id="signupForm">
+                <form id="signupFormElement">
+                    <div class="mb-3">
+                        <label for="signupFullName" class="form-label" style="font-size: 0.95rem;">Full Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                            <input type="text" class="form-control" id="signupFullName" placeholder="Enter full name" required style="font-size: 0.95rem;">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="signupUsername" class="form-label" style="font-size: 0.95rem;">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" id="signupUsername" placeholder="Choose username" required style="font-size: 0.95rem;">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="signupEmail" class="form-label" style="font-size: 0.95rem;">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            <input type="email" class="form-control" id="signupEmail" placeholder="Enter email" required style="font-size: 0.95rem;">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="signupPassword" class="form-label" style="font-size: 0.95rem;">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" id="signupPassword" placeholder="Create password" required style="font-size: 0.95rem;">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label" style="font-size: 0.95rem;">Confirm Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password" required style="font-size: 0.95rem;">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100 py-2" style="font-size: 0.95rem;">
+                        <i class="fas fa-user-plus me-2"></i>Sign Up
+                    </button>
+                </form>
+            </div>
+            
+            <div class="mt-4 text-center">
+                <p class="text-muted" style="font-size: 0.9rem;">Demo Accounts:</p>
+                <p class="small" style="font-size: 0.8rem;">Admin: admin / admin123</p>
+                <p class="small" style="font-size: 0.8rem;">Receptionist: reception / reception123</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- POS System -->
+    <div class="container-fluid p-0" id="posSystem">
+        <div class="pos-container">
+            <div class="pos-header">
+                <div class="header-left">
+                    <img src="images/Billu-Da-Dhaba.jpg.jpg" alt="Restaurant Logo" class="restaurant-logo">
+                    <div class="restaurant-name">
+                        <i class="fas fa-utensils me-1"></i>Billu Da Dhaba
+                    </div>
+                </div>
+                <div class="user-info">
+                    <span id="currentUserName">Welcome, User</span>
+                    <button class="logout-btn" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt me-1"></i>Logout
+                    </button>
+                </div>
+            </div>
+            
+            <div class="pos-body">
+                <div class="menu-section">
+                    <div class="search-box">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Search items..." id="searchInput">
+                        </div>
+                    </div>
+                    
+                    <!-- Features Button -->
+                    <div class="d-flex gap-2 mb-3">
+                        <button class="action-btn feature-btn" id="featuresBtn">
+                            <i class="fas fa-star me-2"></i>Features
+                        </button>
+                        <button class="action-btn feature-btn" id="tablesBtn">
+                            <i class="fas fa-chair me-2"></i>Tables
+                        </button>
+                        <button class="action-btn feature-btn" id="onlineOrdersBtn">
+                            <i class="fas fa-shopping-cart me-2"></i>Online Orders
+                        </button>
+                    </div>
+                    
+                    <div class="category-tabs">
+                        <button class="category-tab active" data-category="all">All</button>
+                        <button class="category-tab" data-category="starters">Starters</button>
+                        <button class="category-tab" data-category="main">Main</button>
+                        <button class="category-tab" data-category="breads">Breads</button>
+                        <button class="category-tab" data-category="drinks">Drinks</button>
+                        <button class="category-tab" data-category="desserts">Desserts</button>
+                    </div>
+                    
+                    <div class="menu-grid" id="menuGrid">
+                        <!-- Menu items will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="bill-section">
+                    <div class="bill-header">
+                        <h4>Current Bill</h4>
+                        <div class="table-selector">
+                            <label for="tableSelect" class="form-label">Table Number</label>
+                            <select class="form-select" id="tableSelect">
+                                <option value="1" selected>Table 1</option>
+                                <option value="2">Table 2</option>
+                                <option value="3">Table 3</option>
+                                <option value="4">Table 4</option>
+                                <option value="5">Table 5</option>
+                                <option value="6">Table 6</option>
+                                <option value="7">Table 7</option>
+                                <option value="8">Table 8</option>
+                                <option value="9">Table 9</option>
+                                <option value="10">Table 10</option>
+                                <option value="takeaway">Takeaway</option>
+                                <option value="delivery">Delivery</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="bill-items" id="billItems">
+                        <div class="empty-bill">
+                            <i class="fas fa-receipt fa-3x mb-3"></i>
+                            <p>No items added yet</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bill-summary">
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">₹0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Tax (5%):</span>
+                            <span id="tax">₹0.00</span>
+                        </div>
+                        <div class="summary-row total-row">
+                            <span>Total:</span>
+                            <span id="total">₹0.00</span>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button class="action-btn clear-btn" id="clearBtn">
+                                <i class="fas fa-trash"></i>CLEAR
+                            </button>
+                            <button class="action-btn print-btn" id="generateBillBtn">
+                                <i class="fas fa-receipt"></i>GENERATE BILL
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Receipt Modal -->
+    <div class="receipt-container" id="receiptContainer">
+        <div class="receipt-modal">
+            <div class="receipt" id="receipt">
+                <div class="receipt-header">
+                    <div class="qr-code" id="qrCode">
+                        <!-- QR code will be generated here -->
+                    </div>
+                    <h4 style="margin-bottom: 5px;">BILLU DA DHABA</h4>
+                    <p style="margin-bottom: 3px; font-size: 0.8rem;">56 Food Street, Indore</p>
+                    <p style="margin-bottom: 3px; font-size: 0.8rem;">Phone: +91 98765 43210</p>
+                    <p style="margin-bottom: 3px; font-size: 0.8rem;">GSTIN: 23ABCDE1234F1Z5</p>
+                    <div class="receipt-divider" style="border-top: 1px dashed #000; margin: 8px 0;"></div>
+                    <p style="margin: 5px 0; font-size: 0.85rem;"><strong>Bill No:</strong> <span id="receiptBillNo">001</span></p>
+                    <p style="margin: 5px 0; font-size: 0.85rem;"><strong>Date:</strong> <span id="receiptDate"></span></p>
+                    <p style="margin: 5px 0; font-size: 0.85rem;"><strong>Time:</strong> <span id="receiptTime"></span></p>
+                    <p style="margin: 5px 0; font-size: 0.85rem;"><strong>Table:</strong> <span id="receiptTable">1</span></p>
+                    <p style="margin: 5px 0; font-size: 0.85rem;"><strong>Cashier:</strong> <span id="receiptCashier">User</span></p>
+                    <div class="receipt-divider" style="border-top: 1px dashed #000; margin: 8px 0;"></div>
+                </div>
+                
+                <div class="receipt-items" id="receiptItems">
+                    <div style="display: flex; justify-content: space-between; font-weight: bold; padding-bottom: 5px; border-bottom: 1px solid #000; font-size: 0.85rem;">
+                        <span>Item</span>
+                        <span>Qty x Price</span>
+                        <span>Amount</span>
+                    </div>
+                    <!-- Receipt items will be populated by JavaScript -->
+                </div>
+                
+                <div class="receipt-summary">
+                    <div class="receipt-divider" style="border-top: 1px dashed #000; margin: 8px 0;"></div>
+                    <div class="receipt-item">
+                        <span>Subtotal:</span>
+                        <span id="receiptSubtotal">₹0.00</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span>Tax (5%):</span>
+                        <span id="receiptTax">₹0.00</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span>Discount:</span>
+                        <span id="receiptDiscount">₹0.00</span>
+                    </div>
+                    <div class="receipt-item receipt-total">
+                        <span>Total:</span>
+                        <span id="receiptTotal">₹0.00</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span>Paid:</span>
+                        <span id="receiptPaid">₹0.00</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span>Change:</span>
+                        <span id="receiptChange">₹0.00</span>
+                    </div>
+                    <div class="receipt-divider" style="border-top: 1px dashed #000; margin: 8px 0;"></div>
+                </div>
+                
+                <div class="receipt-footer">
+                    <p style="margin-bottom: 5px; font-size: 0.8rem;">Thank you for dining with us!</p>
+                    <p style="margin-bottom: 5px; font-size: 0.8rem;">Visit again soon!</p>
+                    <p style="font-size: 0.75rem;">** This is a computer generated bill **</p>
+                </div>
+            </div>
+            
+            <div class="receipt-actions">
+                <button class="receipt-btn download-pdf-btn" id="downloadPdfBtn">
+                    <i class="fas fa-file-pdf"></i> PDF
+                </button>
+                <button class="receipt-btn print-receipt-btn" id="printReceiptBtn">
+                    <i class="fas fa-print"></i> Print
+                </button>
+                <button class="receipt-btn close-receipt-btn" id="closeReceiptBtn">
+                    <i class="fas fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Features Modal -->
+    <div class="features-modal" id="featuresModal">
+        <div class="features-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0">All-in-One Restaurant Platform</h4>
+                <button class="btn btn-sm btn-outline-secondary" id="closeFeaturesBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon tablet">
+                    <i class="fas fa-tablet-alt"></i>
+                </div>
+                <h5 class="feature-title">TABLET MENU</h5>
+                <p class="feature-description">Our tablet menu app runs on both iOS and Android. Perfect for table-side ordering.</p>
+                <button class="btn btn-primary w-100" id="tabletMenuBtn">
+                    <i class="fas fa-mobile-alt me-2"></i>Launch Tablet Menu
+                </button>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon qr">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+                <h5 class="feature-title">QR MENU</h5>
+                <p class="feature-description">No app required. Customers scan QR code on their mobile to see the menu.</p>
+                <button class="btn btn-danger w-100" id="qrMenuBtn">
+                    <i class="fas fa-qrcode me-2"></i>Generate QR Menu
+                </button>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon ordering">
+                    <i class="fas fa-concierge-bell"></i>
+                </div>
+                <h5 class="feature-title">QR & TABLET ORDERING</h5>
+                <p class="feature-description">Unique QR codes identify which table or room ordered. Streamline your service.</p>
+                <button class="btn btn-purple w-100" style="background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white;" id="qrOrderingBtn">
+                    <i class="fas fa-bell me-2"></i>Setup Table QR Codes
+                </button>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon online">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <h5 class="feature-title">ONLINE ORDERING</h5>
+                <p class="feature-description">Start receiving direct online orders with 0% commission. Grow your business.</p>
+                <button class="btn btn-success w-100" id="onlineOrderingBtn">
+                    <i class="fas fa-shopping-cart me-2"></i>Enable Online Orders
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- QR Code Modal -->
+    <div class="features-modal" id="qrModal">
+        <div class="features-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0">QR Menu Generator</h4>
+                <button class="btn btn-sm btn-outline-secondary" id="closeQrBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="qr-display">
+                <div id="qrCodeDisplay"></div>
+                <p class="qr-instructions">Display this QR code on your tables. Customers can scan it to view your digital menu on their phones.</p>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="qrUrl" value="https://billudadhaba.com/menu" readonly>
+                    <button class="btn btn-outline-secondary" id="copyQrUrlBtn">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                <button class="btn btn-primary w-100" id="downloadQrBtn">
+                    <i class="fas fa-download me-2"></i>Download QR Code
+                </button>
+            </div>
+            
+            <div class="mt-4">
+                <h5>Table-Specific QR Codes</h5>
+                <div class="tables-container" id="tableQrContainer">
+                    <!-- Table QR codes will be generated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tables Modal -->
+    <div class="features-modal" id="tablesModal">
+        <div class="features-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0">Table Management</h4>
+                <button class="btn btn-sm btn-outline-secondary" id="closeTablesBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="tables-container">
+                <div class="table-card active" data-table="1">
+                    <div class="table-number">1</div>
+                    <div class="table-status status-available">Available</div>
+                </div>
+                <div class="table-card" data-table="2">
+                    <div class="table-number">2</div>
+                    <div class="table-status status-available">Available</div>
+                </div>
+                <div class="table-card" data-table="3">
+                    <div class="table-number">3</div>
+                    <div class="table-status status-occupied">Occupied</div>
+                </div>
+                <div class="table-card" data-table="4">
+                    <div class="table-number">4</div>
+                    <div class="table-status status-available">Available</div>
+                </div>
+                <div class="table-card" data-table="5">
+                    <div class="table-number">5</div>
+                    <div class="table-status status-available">Available</div>
+                </div>
+                <div class="table-card" data-table="6">
+                    <div class="table-number">6</div>
+                    <div class="table-status status-occupied">Occupied</div>
+                </div>
+                <div class="table-card" data-table="7">
+                    <div class="table-number">7</div>
+                    <div class="table-status status-available">Available</div>
+                </div>
+                <div class="table-card" data-table="8">
+                    <div class="table-number">8</div>
+                    <div class="table-status status-available">Available</div>
+                </div>
+                <div class="table-card" data-table="9">
+                    <div class="table-number">9</div>
+                    <div class="table-status status-available">Available</div>
+                </div>
+                <div class="table-card" data-table="10">
+                    <div class="table-number">10</div>
+                    <div class="table-status status-occupied">Occupied</div>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <h5>Add New Table</h5>
+                <div class="input-group">
+                    <input type="number" class="form-control" id="newTableNumber" placeholder="Table Number" min="11">
+                    <button class="btn btn-success" id="addTableBtn">
+                        <i class="fas fa-plus"></i> Add Table
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Online Orders Modal -->
+    <div class="features-modal" id="onlineOrdersModal">
+        <div class="features-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0">Online Orders Management</h4>
+                <button class="btn btn-sm btn-outline-secondary" id="closeOnlineOrdersBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="online-order-form">
+                <h5 class="text-center mb-4">Configure Online Ordering</h5>
+                
+                <div class="mb-3">
+                    <label class="form-label">Enable Online Orders</label>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="enableOnlineOrders" checked>
+                        <label class="form-check-label" for="enableOnlineOrders">Allow customers to order online</label>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Minimum Order Amount</label>
+                    <input type="number" class="form-control" id="minOrderAmount" value="200" min="0">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Delivery Radius (km)</label>
+                    <input type="number" class="form-control" id="deliveryRadius" value="5" min="1" max="20">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Estimated Delivery Time (minutes)</label>
+                    <input type="number" class="form-control" id="deliveryTime" value="30" min="15" max="120">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Payment Methods</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="cashOnDelivery" checked>
+                        <label class="form-check-label" for="cashOnDelivery">Cash on Delivery</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="onlinePayment" checked>
+                        <label class="form-check-label" for="onlinePayment">Online Payment (UPI/Card)</label>
+                    </div>
+                </div>
+                
+                <button class="btn btn-success w-100" id="saveOnlineOrderSettings">
+                    <i class="fas fa-save me-2"></i>Save Settings
+                </button>
+            </div>
+            
+            <div class="mt-4">
+                <h5>Recent Online Orders</h5>
+                <div class="list-group" id="onlineOrdersList">
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong>Order #1001</strong><br>
+                                <small>Paneer Butter Masala, Butter Naan</small>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge bg-warning">Pending</span><br>
+                                <small>₹520</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong>Order #1002</strong><br>
+                                <small>Veg Biryani, Coke</small>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge bg-success">Delivered</span><br>
+                                <small>₹270</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Restaurant POS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- LOGIN (visible initially) -->
+  <div class="login-container" id="loginView">
+    <div class="login-header">
+      <img src="images/logo.png" alt="logo" class="login-logo" />
+      <h2>Demo Restaurant</h2>
+      <p>Sign in to continue</p>
+    </div>
+
+    <div class="login-tabs">
+      <button class="login-tab active">Staff</button>
+      <button class="login-tab">Manager</button>
+    </div>
+
+    <form id="loginForm" class="login-form active">
+      <div style="margin-bottom:12px;">
+        <input id="staffName" placeholder="Staff name" required style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;">
+      </div>
+      <button type="submit" class="action-btn feature-btn">Sign in</button>
+    </form>
+  </div>
+
+  <!-- POS (hidden initially) -->
+  <div class="pos-container" id="posView" style="display:none;">
+    <div class="pos-header">
+      <div class="header-left">
+        <img src="images/logo.png" class="restaurant-logo" alt="logo">
+        <div class="restaurant-name">Demo Restaurant</div>
+      </div>
+      <div class="user-info">
+        <div id="loggedUser">—</div>
+        <button id="logout" class="logout-btn">Logout</button>
+      </div>
+    </div>
+
+    <div class="pos-body">
+      <section class="menu-section">
+        <div class="category-tabs" id="categoryTabs">
+          <button class="category-tab active" data-cat="all">All</button>
+          <button class="category-tab" data-cat="starters">Starters</button>
+          <button class="category-tab" data-cat="main">Main</button>
+          <button class="category-tab" data-cat="drinks">Drinks</button>
+        </div>
+
+        <div class="search-box">
+          <input id="search" placeholder="Search items..." style="width:100%;padding:8px;border-radius:8px;border:1px solid #ddd;">
+        </div>
+
+        <div class="menu-grid" id="menuGrid">
+          <!-- Example menu items -->
+          <div class="menu-item category-all category-starters" data-id="1" data-name="Spring Rolls" data-price="4.50" data-cat="starters">
+            <img class="menu-item-image" src="images/spring-rolls.jpg" alt="">
+            <div class="menu-item-details">
+              <div class="menu-item-name">Spring Rolls</div>
+              <div class="menu-item-price">$4.50</div>
+            </div>
+          </div>
+
+          <div class="menu-item category-all category-main" data-id="2" data-name="Chicken Curry" data-price="9.99" data-cat="main">
+            <img class="menu-item-image" src="images/chicken-curry.jpg" alt="">
+            <div class="menu-item-details">
+              <div class="menu-item-name">Chicken Curry</div>
+              <div class="menu-item-price">$9.99</div>
+            </div>
+          </div>
+
+          <div class="menu-item category-all category-drinks" data-id="3" data-name="Lemonade" data-price="2.50" data-cat="drinks">
+            <img class="menu-item-image" src="images/lemonade.jpg" alt="">
+            <div class="menu-item-details">
+              <div class="menu-item-name">Lemonade</div>
+              <div class="menu-item-price">$2.50</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="bill-section">
+        <div class="bill-header">
+          <h4>Bill</h4>
+        </div>
+
+        <div class="bill-items" id="billItems">
+          <div class="empty-bill" id="emptyBill">No items yet</div>
+        </div>
+
+        <div class="summary-row">
+          <div>Subtotal</div>
+          <div id="subtotal">$0.00</div>
+        </div>
+        <div class="summary-row total-row">
+          <div>Total</div>
+          <div id="total">$0.00</div>
+        </div>
+
+        <div class="action-buttons">
+          <button id="clearBtn" class="action-btn clear-btn">Clear</button>
+          <button id="printBtn" class="action-btn print-btn">Print / Receipt</button>
+          <button id="featuresBtn" class="action-btn feature-btn">Features</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Receipt Modal -->
+  <div class="receipt-container" id="receiptModal" aria-hidden="true">
+    <div class="receipt-modal">
+      <div class="receipt" id="receiptContent">
+        <div class="receipt-header">
+          <h4>Receipt</h4>
+          <p id="receiptUser"></p>
+        </div>
+        <div id="receiptItems"></div>
+        <div class="summary-row total-row">
+          <div>Total</div>
+          <div id="receiptTotal">$0.00</div>
+        </div>
+
+        <div class="receipt-actions">
+          <button id="closeReceipt" class="receipt-btn">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="Script.js" defer></script>
+</body>
+</html>
